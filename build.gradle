@@ -15,9 +15,12 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	//Fabric API Resource Loader
-	modImplementation fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
-	include fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
+	//Fabric API
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	//Auto Config 1u
+	modApi "me.sargunvohra.mcmods:autoconfig1u:3.2.0-unstable"
+	include "me.sargunvohra.mcmods:autoconfig1u:3.2.0-unstable"
 }
 
 processResources {

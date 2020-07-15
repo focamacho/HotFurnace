@@ -4,7 +4,8 @@
   "package": "com.focamacho.hotfurnace.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "AbstractFurnaceBlockEntityMixin"
+    "AbstractFurnaceBlockEntityMixin",
+    "TitleScreenMixin"
   ],
   "client": [
   ],
