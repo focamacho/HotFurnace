@@ -16,7 +16,7 @@ public class HotFurnaceConfig implements ConfigData {
     @Comment(value = "The maximum percentage of additional speed that a fuel can reach")
     int maxPercentage = 90;
 
-    @Comment(value = "YOU CANNOT USE ITEMS THAT ARE NOT FUEL HERE! YOU CAN ONLY EDIT EXISTING FUEL VALUES\n" +
+    @Comment(value = "Custom Fuels Values" +
             "Syntax: itemID,percentageFaster,fuelValue\n" +
             "itemID = The item id. Example: minecraft:coal. To use item tags, start with \"tag:\". Example: tag:minecraft:coals\n" +
             "percentageFaster = How much faster it is compared to the normal furnace. It cannot exceed the value defined in 'maxPercentage'\n" +
