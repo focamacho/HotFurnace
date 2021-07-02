@@ -1,6 +1,6 @@
 package com.focamacho.hotfurnace.mixin;
 
-import com.focamacho.hotfurnace.config.ConfigHolder;
+import com.focamacho.hotfurnace.config.ConfigHandler;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +17,7 @@ public abstract class AbstractFurnaceBlockEntityMixin {
 
     @Shadow private int fuelTime;
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @Shadow protected abstract boolean isBurning();
 
     @Shadow protected abstract int getFuelTime(ItemStack fuel);
@@ -29,25 +30,15 @@ public abstract class AbstractFurnaceBlockEntityMixin {
 
     @Shadow private int cookTime;
 
-    private Item cacheFuelItem;
+    private double cachePercentage;
 
     @Inject(method = "getCookTime", at = @At("RETURN"), cancellable = true)
     private void getCookTime(CallbackInfoReturnable<Integer> info) {
-        if(!this.isBurning() && fuelTime <= 0) {
+        if(!this.isBurning() && this.fuelTime <= 0) {
             this.fuelTime = getFuelTime(this.inventory.get(1));
         }
 
-        int percentage = 0;
-
-        if(ConfigHolder.customValues.containsKey(cacheFuelItem)) {
-            percentage = ConfigHolder.customValues.get(cacheFuelItem);
-        } else if(this.fuelTime > ConfigHolder.divisorNumber) {
-            percentage = this.fuelTime / ConfigHolder.divisorNumber;
-        }
-
-        if(percentage > ConfigHolder.maxPercentage) percentage = ConfigHolder.maxPercentage;
-
-        info.setReturnValue((info.getReturnValue() / 100) * (100 - percentage));
+        info.setReturnValue((int) ((info.getReturnValue() / 100) * (100 - this.cachePercentage)));
     }
 
     @Inject(method = "setStack", at = @At("HEAD"))
@@ -60,9 +51,17 @@ public abstract class AbstractFurnaceBlockEntityMixin {
         }
     }
 
-    @Inject(method = "getFuelTime", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getFuelTime", at = @At("RETURN"), cancellable = true)
     private void getFuelTime(ItemStack stack, CallbackInfoReturnable<Integer> info) {
-        this.cacheFuelItem = stack.getItem();
+        Item fuelItem = stack.getItem();
+
+        if(ConfigHandler.customValues.containsKey(fuelItem)) {
+            this.cachePercentage = ConfigHandler.customValues.get(fuelItem);
+        } else if(info.getReturnValue() > ConfigHandler.config.divisorNumber) {
+            this.cachePercentage = (double) info.getReturnValue() / ConfigHandler.config.divisorNumber;
+        }
+
+        if(this.cachePercentage > ConfigHandler.config.maxPercentage) this.cachePercentage = ConfigHandler.config.maxPercentage;
     }
 
 }

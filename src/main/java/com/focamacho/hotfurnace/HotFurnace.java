@@ -1,12 +1,7 @@
 package com.focamacho.hotfurnace;
 
-import com.focamacho.hotfurnace.config.ConfigHolder;
-import com.focamacho.hotfurnace.config.HotFurnaceConfig;
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
+import com.focamacho.hotfurnace.config.ConfigHandler;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.server.ServerStartCallback;
-import net.fabricmc.fabric.api.registry.FuelRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,13 +11,7 @@ public class HotFurnace implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		AutoConfig.register(HotFurnaceConfig.class, JanksonConfigSerializer::new);
-		ConfigHolder.initConfigs();
-		ServerStartCallback.EVENT.register(server -> {
-			ConfigHolder.addLateValues();
-			ConfigHolder.changeFuelValues(FuelRegistry.INSTANCE);
-		});
+		new ConfigHandler().initConfigs();
 	}
-
 
 }
