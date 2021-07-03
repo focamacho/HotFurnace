@@ -23,7 +23,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	//Seal Config
-	compile 'com.focamacho:sealconfig:1.2.2'
+	implementation 'com.focamacho:sealconfig:1.2.2'
+	include 'com.focamacho:sealconfig:1.2.2'
 }
 
 processResources {

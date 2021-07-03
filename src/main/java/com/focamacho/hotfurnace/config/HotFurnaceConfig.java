@@ -17,7 +17,9 @@ public class HotFurnaceConfig {
             "item = The item id. Example: minecraft:coal. To use item tags, start with \"tag:\". Example: tag:minecraft:coals\n" +
             "percentage = How much faster it is compared to the normal furnace. It cannot exceed the value defined in 'maxPercentage'\n" +
             "fuel = The amount of ticks a fuel lasts. Check out https://minecraft.gamepedia.com/Furnace/table if you need examples\n")
-    public CustomValue[] customValues = {};
+    public CustomValue[] customValues = {
+            new CustomValue("minecraft:lava_bucket", 80, 18000)
+    };
 
     @SuppressWarnings("unused")
     public static class CustomValue {
