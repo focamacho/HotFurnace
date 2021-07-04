@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "com.focamacho.hotfurnace.mixin",
   "compatibilityLevel": "JAVA_8",
+  "refmap": "hotfurnace.refmap.json",
   "mixins": [
     "AbstractFurnaceBlockEntityMixin"
   ],
