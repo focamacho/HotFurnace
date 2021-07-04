@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="MIT"
+[[mods]]
+modId="hotfurnace"
+version="${file.jarVersion}"
+displayName="HotFurnace"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/hot-furnace-forge"
+logoFile="assets/hotfurnace/icon.png"
+authors="Focamacho"
+description='''
+Speed up your furnace just by using better fuels.
+'''
