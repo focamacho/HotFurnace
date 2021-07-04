@@ -1,9 +1,11 @@
 package com.focamacho.hotfurnace.mixin;
 
 import com.focamacho.hotfurnace.config.ConfigHandler;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,7 +53,7 @@ public abstract class AbstractFurnaceBlockEntityMixin {
         }
     }
 
-    @Inject(method = "getFuelTime", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getFuelTime", at = @At("RETURN"))
     private void getFuelTime(ItemStack stack, CallbackInfoReturnable<Integer> info) {
         Item fuelItem = stack.getItem();
 
@@ -62,6 +64,17 @@ public abstract class AbstractFurnaceBlockEntityMixin {
         }
 
         if(this.cachePercentage > ConfigHandler.config.maxPercentage) this.cachePercentage = ConfigHandler.config.maxPercentage;
+        if(this.cachePercentage >= 99.8d) this.cachePercentage = 99d;
+    }
+
+    @Inject(method = "fromTag", at = @At("HEAD"))
+    private void read(BlockState state, NbtCompound tag, CallbackInfo ci) {
+        this.cachePercentage = tag.getDouble("cachePercentage");
+    }
+
+    @Inject(method = "writeNbt", at = @At("HEAD"))
+    private void write(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
+        nbt.putDouble("cachePercentage", this.cachePercentage);
     }
 
 }

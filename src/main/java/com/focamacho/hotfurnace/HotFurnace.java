@@ -10,8 +10,9 @@ public class HotFurnace implements ModInitializer {
 	public static final Logger logger = LogManager.getLogger();
 
 	@Override
+	@SuppressWarnings("")
 	public void onInitialize() {
-		new ConfigHandler().initConfigs();
+		new ConfigHandler();
 	}
 
 }
