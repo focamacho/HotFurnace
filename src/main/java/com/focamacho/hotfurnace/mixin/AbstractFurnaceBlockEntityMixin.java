@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
+import net.minecraft.tileentity.LockableTileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractFurnaceTileEntity.class)
-public abstract class AbstractFurnaceBlockEntityMixin {
+public abstract class AbstractFurnaceBlockEntityMixin extends LockableTileEntity {
 
     @Shadow private int burnTimeTotal;
 
@@ -34,6 +36,10 @@ public abstract class AbstractFurnaceBlockEntityMixin {
 
     private double cachePercentage;
 
+    protected AbstractFurnaceBlockEntityMixin(TileEntityType<?> typeIn) {
+        super(typeIn);
+    }
+
     @Inject(method = "getCookTime", at = @At("RETURN"), cancellable = true)
     private void getCookTime(CallbackInfoReturnable<Integer> info) {
         if(!this.isBurning() && this.burnTimeTotal <= 0) {
@@ -48,7 +54,7 @@ public abstract class AbstractFurnaceBlockEntityMixin {
         if(!this.isBurning()) {
             if(slot == 1) {
                 this.burnTimeTotal = getBurnTime(stack);
-                if(this.cookTime <= 0) this.cookTimeTotal = this.getCookTime();
+                if(this.cookTime <= 0 && this.world != null) this.cookTimeTotal = this.getCookTime();
             }
         }
     }
